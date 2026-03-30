@@ -1,7 +1,7 @@
 from datetime import datetime
 
-from sqlalchemy import Boolean, DateTime, Integer, String, Text
-from sqlalchemy.orm import Mapped, mapped_column
+from sqlalchemy import Boolean, DateTime, ForeignKey, Integer, String, Text
+from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from app.db.database import Base
 
@@ -30,3 +30,36 @@ class Submission(Base):
     created_at: Mapped[datetime] = mapped_column(DateTime, default=datetime.utcnow)
     updated_at: Mapped[datetime] = mapped_column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
     finished_at: Mapped[datetime | None] = mapped_column(DateTime, nullable=True)
+
+    document: Mapped["Document | None"] = relationship(
+        "Document",
+        back_populates="submission",
+        uselist=False,
+        cascade="all, delete-orphan",
+    )
+
+
+class Document(Base):
+    __tablename__ = "documents"
+
+    id: Mapped[int] = mapped_column(Integer, primary_key=True, index=True)
+    submission_id: Mapped[int] = mapped_column(ForeignKey("submissions.id"), unique=True)
+
+    title: Mapped[str | None] = mapped_column(String(255), nullable=True)
+    abstract_text: Mapped[str | None] = mapped_column(Text, nullable=True)
+    keywords_json: Mapped[str | None] = mapped_column(Text, nullable=True)
+    sections_json: Mapped[str | None] = mapped_column(Text, nullable=True)
+    references_json: Mapped[str | None] = mapped_column(Text, nullable=True)
+
+    raw_text_path: Mapped[str | None] = mapped_column(String(500), nullable=True)
+
+    word_count: Mapped[int] = mapped_column(Integer, default=0)
+    section_count: Mapped[int] = mapped_column(Integer, default=0)
+    reference_count: Mapped[int] = mapped_column(Integer, default=0)
+
+    created_at: Mapped[datetime] = mapped_column(DateTime, default=datetime.utcnow)
+
+    submission: Mapped["Submission"] = relationship(
+        "Submission",
+        back_populates="document",
+    )

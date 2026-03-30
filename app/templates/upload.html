@@ -16,38 +16,38 @@
         </section>
 
         <section class="card">
-            <form>
+            <form action="/submit" method="post" enctype="multipart/form-data">
                 <div class="form-group">
-                    <label>上传论文文件</label>
-                    <input type="file" disabled />
+                    <label for="paper_file">上传论文文件</label>
+                    <input id="paper_file" name="paper_file" type="file" accept=".docx,.pdf" required />
                 </div>
 
                 <div class="form-group">
-                    <label>学校名称</label>
-                    <input type="text" placeholder="例如：某某大学" disabled />
+                    <label for="school_name">学校名称</label>
+                    <input id="school_name" name="school_name" type="text" placeholder="例如：某某大学" />
                 </div>
 
                 <div class="form-group">
-                    <label>专业名称</label>
-                    <input type="text" placeholder="例如：计算机科学与技术" disabled />
+                    <label for="major_name">专业名称</label>
+                    <input id="major_name" name="major_name" type="text" placeholder="例如：计算机科学与技术" />
                 </div>
 
                 <div class="form-group">
-                    <label>论文类型</label>
-                    <select disabled>
-                        <option>本科毕业论文</option>
-                        <option>课程论文</option>
-                        <option>毕业设计报告</option>
+                    <label for="paper_type">论文类型</label>
+                    <select id="paper_type" name="paper_type">
+                        <option value="本科毕业论文" selected>本科毕业论文</option>
+                        <option value="课程论文">课程论文</option>
+                        <option value="毕业设计报告">毕业设计报告</option>
                     </select>
                 </div>
 
-                <div class="checkbox-row">
-                    <input type="checkbox" checked disabled />
+                <label class="checkbox-row">
+                    <input type="checkbox" name="need_defense_pack" checked />
                     <span>生成答辩冲刺包</span>
-                </div>
+                </label>
 
-                <button type="button" class="primary-btn" disabled>
-                    开始体检（下一步接入）
+                <button type="submit" class="primary-btn">
+                    开始体检
                 </button>
             </form>
         </section>

@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{{ page_title }}</title>
+    <link rel="stylesheet" href="/static/styles.css" />
+</head>
+<body>
+    <main class="container">
+        <section class="hero">
+            <h1>正在解析你的论文</h1>
+            <p class="subtitle">
+                当前这一步会提取标题、摘要、关键词、章节和参考文献。
+            </p>
+        </section>
+
+        <section class="card">
+            <div class="status-block">
+                <p><strong>提交 ID：</strong><span id="submission-id">{{ submission_id }}</span></p>
+                <p><strong>当前状态：</strong><span id="status-text">正在获取...</span></p>
+                <p><strong>文件名：</strong><span id="filename-text">--</span></p>
+                <p><strong>学校：</strong><span id="school-text">--</span></p>
+                <p><strong>专业：</strong><span id="major-text">--</span></p>
+                <p><strong>论文类型：</strong><span id="paper-type-text">--</span></p>
+                <p><strong>答辩包：</strong><span id="defense-pack-text">--</span></p>
+            </div>
+
+            <div class="notice-box">
+                <p id="notice-text">系统正在后台处理，请不要关闭页面。</p>
+            </div>
+        </section>
+    </main>
+
+    <script>
+        const submissionId = "{{ submission_id }}";
+
+        async function fetchStatus() {
+            try {
+                const response = await fetch(`/status/${submissionId}`);
+                if (!response.ok) {
+                    document.getElementById("status-text").textContent = "获取失败";
+                    return;
+                }
+
+                const data = await response.json();
+
+                document.getElementById("status-text").textContent = data.status || "--";
+                document.getElementById("filename-text").textContent = data.filename || "--";
+                document.getElementById("school-text").textContent = data.school_name || "--";
+                document.getElementById("major-text").textContent = data.major_name || "--";
+                document.getElementById("paper-type-text").textContent = data.paper_type || "--";
+                document.getElementById("defense-pack-text").textContent = data.need_defense_pack ? "是" : "否";
+
+                if (data.status === "parsing") {
+                    document.getElementById("notice-text").textContent = "正在解析文档内容，请稍等...";
+                }
+
+                if (data.status === "parsed") {
+                    document.getElementById("notice-text").textContent = "解析完成，正在跳转预览页...";
+                    setTimeout(() => {
+                        window.location.href = `/preview/${submissionId}`;
+                    }, 1000);
+                }
+
+                if (data.status === "failed") {
+                    document.getElementById("notice-text").textContent =
+                        "解析失败：" + (data.error_message || "未知错误");
+                }
+            } catch (error) {
+                document.getElementById("status-text").textContent = "请求异常";
+                document.getElementById("notice-text").textContent = "网络请求异常，请稍后刷新重试。";
+            }
+        }
+
+        fetchStatus();
+        setInterval(fetchStatus, 2000);
+    </script>
+</body>
+</html>

@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{{ page_title }}</title>
+    <link rel="stylesheet" href="/static/styles.css" />
+</head>
+<body>
+    <main class="container">
+        {% if not_found %}
+            <section class="hero">
+                <h1>未找到解析结果</h1>
+                <p class="subtitle">请返回首页重新上传文件。</p>
+            </section>
+        {% else %}
+            <section class="hero">
+                <h1>文档解析完成</h1>
+                <p class="subtitle">这是我们后续做规则检查和智能分析的基础数据。</p>
+            </section>
+
+            <section class="card">
+                <h2>基础信息</h2>
+                <p><strong>提交 ID：</strong>{{ submission.public_id }}</p>
+                <p><strong>原文件名：</strong>{{ submission.filename }}</p>
+                <p><strong>识别标题：</strong>{{ document.title or "未识别" }}</p>
+                <p><strong>总字数：</strong>{{ document.word_count }}</p>
+                <p><strong>章节数：</strong>{{ document.section_count }}</p>
+                <p><strong>参考文献数：</strong>{{ document.reference_count }}</p>
+            </section>
+
+            <section class="card" style="margin-top: 20px;">
+                <h2>关键词</h2>
+                {% if keywords %}
+                    <div class="tag-list">
+                        {% for kw in keywords %}
+                            <span class="tag">{{ kw }}</span>
+                        {% endfor %}
+                    </div>
+                {% else %}
+                    <p>未识别到关键词</p>
+                {% endif %}
+            </section>
+
+            <section class="card" style="margin-top: 20px;">
+                <h2>摘要预览</h2>
+                <p style="white-space: pre-wrap; line-height: 1.8;">
+                    {{ document.abstract_text or "未识别到摘要" }}
+                </p>
+            </section>
+
+            <section class="card" style="margin-top: 20px;">
+                <h2>章节预览</h2>
+                {% if sections %}
+                    {% for section in sections %}
+                        <div class="section-item">
+                            <h3>{{ loop.index }}. {{ section.heading }}</h3>
+                            <p style="white-space: pre-wrap; line-height: 1.7;">
+                                {{ section.content[:300] }}{% if section.content|length > 300 %}...{% endif %}
+                            </p>
+                        </div>
+                    {% endfor %}
+                {% else %}
+                    <p>未识别到章节</p>
+                {% endif %}
+            </section>
+
+            <section class="card" style="margin-top: 20px;">
+                <h2>参考文献预览</h2>
+                {% if references %}
+                    <ol>
+                        {% for ref in references[:20] %}
+                            <li style="margin-bottom: 8px;">{{ ref }}</li>
+                        {% endfor %}
+                    </ol>
+                {% else %}
+                    <p>未识别到参考文献</p>
+                {% endif %}
+            </section>
+
+            <div style="margin-top: 20px;">
+                <button class="secondary-btn" onclick="window.location.href='/'">继续上传其他文件</button>
+            </div>
+        {% endif %}
+    </main>
+</body>
+</html>
