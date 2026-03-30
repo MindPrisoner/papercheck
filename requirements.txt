@@ -1,0 +1,1 @@
+"fastapi[standard]" sqlalchemy jinja2 python-dotenv python-docx pymupdf

@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{{ page_title }}</title>
+    <link rel="stylesheet" href="/static/styles.css" />
+</head>
+<body>
+    <main class="container">
+        <section class="hero">
+            <h1>提交前，先做一次论文体检</h1>
+            <p class="subtitle">
+                检查结构、规范、论证与答辩风险，生成可执行的修改清单
+            </p>
+        </section>
+
+        <section class="card">
+            <form>
+                <div class="form-group">
+                    <label>上传论文文件</label>
+                    <input type="file" disabled />
+                </div>
+
+                <div class="form-group">
+                    <label>学校名称</label>
+                    <input type="text" placeholder="例如：某某大学" disabled />
+                </div>
+
+                <div class="form-group">
+                    <label>专业名称</label>
+                    <input type="text" placeholder="例如：计算机科学与技术" disabled />
+                </div>
+
+                <div class="form-group">
+                    <label>论文类型</label>
+                    <select disabled>
+                        <option>本科毕业论文</option>
+                        <option>课程论文</option>
+                        <option>毕业设计报告</option>
+                    </select>
+                </div>
+
+                <div class="checkbox-row">
+                    <input type="checkbox" checked disabled />
+                    <span>生成答辩冲刺包</span>
+                </div>
+
+                <button type="button" class="primary-btn" disabled>
+                    开始体检（下一步接入）
+                </button>
+            </form>
+        </section>
+
+        <section class="tips">
+            <p>支持 docx / pdf</p>
+            <p>不代写，不承诺任何检测结果</p>
+            <p>文件仅用于本次分析，默认 72 小时后删除</p>
+        </section>
+    </main>
+</body>
+</html>
