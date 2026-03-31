@@ -21,3 +21,11 @@ data/
 .vscode/
 
 .DS_Store
+
+.venv/
+__pycache__/
+papercheck.db
+data/uploads/
+data/parsed/
+data/reports/
+.env
